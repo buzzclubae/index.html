@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUZZ CLUB - DORUS HOTEL</title>
+    <style>
+        :root { --gold: #D4AF37; --dark: #0f0f0f; --wa: #25D366; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; display: flex; justify-content: center; padding: 10px; margin: 0; }
+        .card { background: #1a1a1a; padding: 20px; border-radius: 20px; border: 1px solid var(--gold); width: 100%; max-width: 450px; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
+        .header { text-align: center; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 15px; }
+        h1 { color: var(--gold); margin: 5px 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
+        .loc { font-size: 11px; color: #aaa; }
+        
+        label { display: block; margin: 15px 0 5px; font-weight: bold; color: var(--gold); font-size: 13px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 10px; background: #262626; color: white; font-size: 15px; box-sizing: border-box; }
+        
+        .cat-box { background: #262626; border: 1px solid #444; border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+        .item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; font-size: 14px; align-items: center; }
+        .item:last-child { border-bottom: none; }
+        input[type="checkbox"] { transform: scale(1.4); accent-color: var(--gold); }
+
+        .btn-wa { background: var(--wa); color: white; border: none; width: 100%; padding: 18px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 20px; text-decoration: none; display: block; text-align: center; }
+        #finalStep { display: none; margin-top: 20px; padding: 15px; border: 2px solid var(--gold); border-radius: 15px; background: #222; text-align: center; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h1>🐝 BUZZ CLUB</h1>
+        <div class="loc">Dorus Hotel, Naif, Dubai</div>
+    </div>
+
+    <div style="background:#ff0050; color:white; padding:8px; border-radius:8px; text-align:center; font-weight:bold; font-size:12px; margin-bottom:15px;">
+        🥂 LADIES: FREE ENTRY & DRINKS
+    </div>
+
+    <label>👤 GUEST INFO</label>
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="guest" placeholder="Guest Name">
+        <input type="number" id="pax" value="1" min="1" style="width:70px;">
+    </div>
+
+    <label>🤵 STAFF MEMBER (WHO SERVED YOU?)</label>
+    <select id="staffName">
+        <option value="Direct (No Staff)">Direct / None</option>
+        <option value="Sundas">Sundas</option>
+        <option value="Chand">Chand</option>
+        <option value="Tania">Tania</option>
+        <option value="Azhar">Azhar</option>
+        <option value="Piyash">Piyash</option>
+        <option value="Ameera">Ameera</option>
+        <option value="Annie">Annie</option>
+        <option value="Ayesha">Ayesha</option>
+    </select>
+
+    <label>📦 MENU SELECTION</label>
+    <div class="cat-box">
+        <div class="item"><span>🍺 Corona Bucket (200)</span> <input type="checkbox" class="cb" value="Corona" data-p="200"></div>
+        <div class="item"><span>🍺 Heineken/Bud (150)</span> <input type="checkbox" class="cb" value="Heineken/Bud" data-p="150"></div>
+        <div class="item"><span>🥃 Whiskey 500ml (250)</span> <input type="checkbox" class="cb" value="Whiskey 500ml" data-p="250"></div>
+        <div class="item"><span>🥃 Whiskey 1L (500)</span> <input type="checkbox" class="cb" value="Whiskey 1L" data-p="500"></div>
+        <div class="item"><span>💨 Sheesha (100)</span> <input type="checkbox" class="cb" value="Sheesha" data-p="100"></div>
+        <div class="item"><span>🕯️ Fire Candle (100)</span> <input type="checkbox" class="cb" value="Fire Candle" data-p="100"></div>
+        <div class="item"><span>🍗 Chicken Lollypop (50)</span> <input type="checkbox" class="cb" value="Chicken Lollypop" data-p="50"></div>
+    </div>
+
+    <div style="display:flex; gap:10px;">
+        <div style="flex:1;"><label>🛋️ TABLE</label><select id="table"><option>VIP Table</option><option>Dance Floor</option></select></div>
+        <div style="flex:1;"><label>⏰ TIME</label><input type="time" id="time"></div>
+    </div>
+
+    <button id="prepBtn" class="btn-wa" onclick="prepareBooking()">GENERATE BOOKING</button>
+
+    <div id="finalStep">
+        <p style="color:var(--gold); font-weight:bold; margin-bottom:10px;">✓ BOOKING READY</p>
+        <a id="waLink" href="#" class="btn-wa">👉 SEND TO MR. ROHIT NOW</a>
+    </div>
+
+    <div class="footer">
+        DORUS HOTEL • OMAR BIN AL KHATTAB ST<br>
+        <strong>MANAGER: MR. ROHIT (+971 50 968 2025)</strong>
+    </div>
+</div>
+
+<script>
+    function prepareBooking() {
+        const guest = document.getElementById('guest').value;
+        const pax = document.getElementById('pax').value;
+        const time = document.getElementById('time').value;
+        const table = document.getElementById('table').value;
+        const staff = document.getElementById('staffName').value;
+        const selected = document.querySelectorAll('.cb:checked');
+
+        if(!guest || !time || selected.length === 0) {
+            alert("Please enter Name, Time and select at least one item!");
+            return;
+        }
+
+        let items = ""; let total = 0;
+        selected.forEach(i => { 
+            items += `• ${i.value}%0A`; 
+            total += parseInt(i.getAttribute('data-p')); 
+        });
+
+        const stamp = new Date().toLocaleString('en-AE', { timeZone: 'Asia/Dubai' });
+        const ref = "BZ" + Math.floor(1000 + Math.random() * 9000);
+
+        // ALWAYS GOES TO MR. ROHIT'S NUMBER
+        const myNumber = "971509682025"; 
+
+        const msg = `*NEW BUZZ CLUB BOOKING*%0A` +
+                    `*Ref:* ${ref}%0A` +
+                    `--------------------------%0A` +
+                    `👤 *Guest:* ${guest} (${pax} Pax)%0A` +
+                    `🤵 *Staff Credit:* ${staff}%0A` +
+                    `⏰ *Arrival:* ${time}%0A` +
+                    `🛋️ *Table:* ${table}%0A` +
+                    `📅 *Booked At:* ${stamp}%0A` +
+                    `--------------------------%0A` +
+                    `*ORDER:*%0A${items}` +
+                    `💰 *Total:* AED ${total}%0A` +
+                    `--------------------------%0A` +
+                    `_Confirmed Booking - See you soon!_`;
+
+        const link = "https://wa.me/" + myNumber + "?text=" + msg;
+
+        document.getElementById('prepBtn').style.display = "none";
+        document.getElementById('finalStep').style.display = "block";
+        document.getElementById('waLink').href = link;
+    }
+</script>
+</body>
+</html>
